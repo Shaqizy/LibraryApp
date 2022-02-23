@@ -2,11 +2,7 @@ package com.shayzeq.libraryApp.model
 
 import org.springframework.data.jpa.repository.Temporal
 import java.util.Date
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToOne
-import javax.persistence.TemporalType
+import javax.persistence.*
 
 @Entity
 data class Book(
@@ -17,10 +13,10 @@ data class Book(
     @Temporal(TemporalType.DATE)
     val publicationYear: Date,
     val isbn: Int,
-    @OneToOne
-    @JoinColumn(name = "author_id")
+    @OneToOne(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", referencedColumnName = "author_id")
     val author: Author,
-    @OneToOne
-    @JoinColumn(name = "publisher_id")
+    @OneToOne(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+    @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     val publisher: Publisher
 )

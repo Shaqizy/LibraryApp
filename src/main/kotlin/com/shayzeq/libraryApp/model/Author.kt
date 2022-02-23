@@ -11,7 +11,6 @@ data class Author(
     @Id
     val author_id: String,
     val firstName: String,
-    val middleName: String,
     val lastName: String,
     val country: String,
     @Temporal(TemporalType.DATE)
