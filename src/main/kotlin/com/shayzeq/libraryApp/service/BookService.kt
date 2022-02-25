@@ -1,13 +1,12 @@
 package com.shayzeq.libraryApp.service
 
 import com.shayzeq.libraryApp.dto.BookDto
-import com.shayzeq.libraryApp.model.Book
 
 interface BookService {
 
-    fun getAllBooks(): List<Book>
+    fun getAllBooks(): List<BookDto>
 
-    fun getById(id: String): Book
+    fun getById(id: String): BookDto
 
     fun create(book: BookDto)
 

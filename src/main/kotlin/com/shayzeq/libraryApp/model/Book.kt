@@ -13,10 +13,10 @@ data class Book(
     @Temporal(TemporalType.DATE)
     val publicationYear: Date,
     val isbn: Int,
-    @OneToOne(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+    @OneToOne(cascade = arrayOf(CascadeType.MERGE), fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
     val author: Author,
-    @OneToOne(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
+    @OneToOne(cascade = arrayOf(CascadeType.MERGE), fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     val publisher: Publisher
 )
