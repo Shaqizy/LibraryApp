@@ -5,6 +5,7 @@ import com.shayzeq.libraryApp.dto.AuthorDto
 import com.shayzeq.libraryApp.dto.BookDto
 import com.shayzeq.libraryApp.dto.PublisherDto
 import com.shayzeq.libraryApp.exception.BookNotFoundException
+import com.shayzeq.libraryApp.exception.LibraryAbstractException
 import com.shayzeq.libraryApp.model.Author
 import com.shayzeq.libraryApp.model.Book
 import com.shayzeq.libraryApp.model.Publisher
@@ -17,32 +18,14 @@ class BookServiceImpl(
     ) : BookService{
 
     override fun getAllBooks(): List<BookDto> =
-        bookDao.findAll().map { it.toDto() }
+        bookDao.findAll().map { it?.toDto() ?: throw BookNotFoundException("Book list is empty") }
 
     override fun getById(id: String): BookDto =
         bookDao.findByIdOrNull(id)?.toDto()
-            ?: throw BookNotFoundException(id)
+            ?: throw BookNotFoundException("Book with id = $id not found")
 
     override fun create(book: BookDto) {
-        val newBook = Book(
-            book_id = book.book_id,
-            name = book.name,
-            volume = book.volume,
-            publicationYear = book.publicationYear,
-            isbn = book.isbn,
-            author = Author(
-                book.author.author_id,
-                book.author.firstName,
-                book.author.lastName,
-                book.author.country,
-                book.author.birthdate),
-            publisher = Publisher(
-                book.publisher.publisher_id,
-                book.publisher.name,
-                book.publisher.city
-            )
-        )
-        bookDao.save(newBook)
+        bookDao.save(book.fromDto())
     }
 
     override fun update(id: String, book: BookDto) {
@@ -51,7 +34,9 @@ class BookServiceImpl(
     }
 
     override fun deleteById(id: String) {
-        bookDao.deleteById(id)
+        val existingBook: Book = bookDao.findByIdOrNull(id)
+            ?: throw BookNotFoundException("Book with id = $id not found")
+        bookDao.deleteById(existingBook.book_id)
     }
 
     private fun Book.toDto(): BookDto =
@@ -69,6 +54,27 @@ class BookServiceImpl(
                 birthdate = this.author.birthdate
             ),
             publisher = PublisherDto(
+                publisher_id = this.publisher.publisher_id,
+                name = this.publisher.name,
+                city = this.publisher.city
+            )
+        )
+
+    private fun BookDto.fromDto(): Book =
+        Book(
+            book_id = this.book_id,
+            name = this.name,
+            volume = this.volume,
+            publicationYear = this.publicationYear,
+            isbn = this.isbn,
+            author = Author(
+                author_id = this.author.author_id,
+                firstName = this.author.firstName,
+                lastName = this.author.lastName,
+                country = this.author.country,
+                birthdate = this.author.birthdate
+            ),
+            publisher = Publisher(
                 publisher_id = this.publisher.publisher_id,
                 name = this.publisher.name,
                 city = this.publisher.city

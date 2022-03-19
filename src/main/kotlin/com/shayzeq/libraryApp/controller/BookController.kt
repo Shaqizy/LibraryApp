@@ -1,6 +1,7 @@
 package com.shayzeq.libraryApp.controller
 
 import com.shayzeq.libraryApp.dto.BookDto
+import com.shayzeq.libraryApp.dto.InfoMessageDto
 import com.shayzeq.libraryApp.exception.BookNotFoundException
 import com.shayzeq.libraryApp.service.BookService
 import io.swagger.v3.oas.annotations.Operation
@@ -30,22 +31,20 @@ class BookController(val bookService: BookService) {
     @Operation(summary = "Получение книги по ее идентификатору")
     fun getBookById(@PathVariable id: String): ResponseEntity<Any> {
         val bookDto: BookDto = bookService.getById(id)
-//        return if (bookDto != null) ResponseEntity(bookService.getById(id), HttpStatus.OK)
-//        else ResponseEntity("Book with id not found!", HttpStatus.NOT_FOUND)
         return ResponseEntity(bookDto, HttpStatus.OK)
     }
 
     @PostMapping("/new")
     @Operation(summary = "Создание новой книги")
-    fun createBook(@RequestBody book: BookDto): ResponseEntity<String> {
+    fun createBook(@RequestBody book: BookDto): ResponseEntity<Any> {
         bookService.create(book)
-        return ResponseEntity(book.book_id, HttpStatus.CREATED)
+        return ResponseEntity(InfoMessageDto("Book with id = ${book.book_id} created successfully!"), HttpStatus.CREATED)
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удаление книги по ее идентификатору")
-    fun deleteBook(@PathVariable id: String): ResponseEntity<String> {
+    fun deleteBook(@PathVariable id: String): ResponseEntity<Any> {
         bookService.deleteById(id)
-        return ResponseEntity("Deleted successfully!", HttpStatus.OK)
+        return ResponseEntity(InfoMessageDto("Deleted Book with id = $id successfully!"), HttpStatus.OK)
     }
 }

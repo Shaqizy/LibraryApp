@@ -4,7 +4,7 @@ import com.shayzeq.libraryApp.dto.BookDto
 
 interface BookService {
 
-    fun getAllBooks(): List<BookDto>
+    fun getAllBooks(): List<BookDto>?
 
     fun getById(id: String): BookDto
 
