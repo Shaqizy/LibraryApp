@@ -4,8 +4,8 @@ import java.util.*
 
 data class AuthorDto(
     val author_id: String,
-    val firstName: String,
-    val lastName: String,
-    val country: String,
-    val birthdate: Date
+    var firstName: String?,
+    var lastName: String?,
+    var country: String?,
+    var birthdate: Date?
 )
