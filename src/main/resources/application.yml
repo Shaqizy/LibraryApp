@@ -3,13 +3,14 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/library
     username: pgadmin
-    password: admin123
+    password: admin1234
   jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL95Dialect
-        show_sql: true
-        temp:
-          use_jdbc_metadata_defaults: false
+    hibernate:
+      default_schema: public
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      show_sql: true
+      ddl-auto: update
+      temp:
+         use_jdbc_metadata_defaults: false
 
 
