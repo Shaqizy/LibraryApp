@@ -42,6 +42,7 @@ class BookController(val bookService: BookService) {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Обновление книги по ее идентификатору")
     fun updateBook(@PathVariable id: String, @RequestBody book: BookDto): ResponseEntity<Any>{
         bookService.update(id, book)
         return ResponseEntity(InfoMessageDto("Book by id = $id updated!"), HttpStatus.OK)

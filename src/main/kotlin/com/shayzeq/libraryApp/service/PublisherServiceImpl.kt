@@ -37,6 +37,8 @@ class PublisherServiceImpl(
     }
 
     override fun deleteById(id: String) {
-        TODO("Not yet implemented")
+        val existingPublisher: Publisher = publisherDao.findByIdOrNull(id)
+            ?: throw NotFoundException("Publisher with id = $id not found")
+        publisherDao.deleteById(existingPublisher.publisher_id!!)
     }
 }
