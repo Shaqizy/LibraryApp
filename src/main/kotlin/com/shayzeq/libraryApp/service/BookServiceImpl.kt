@@ -24,7 +24,6 @@ class BookServiceImpl(
             ?: throw NotFoundException("Book with id = $id not found"))
 
     override fun create(book: BookDto) {
-//        bookDao.save(book.fromDto())
         bookDao.save(bookMapper.mapToModel(book))
     }
 
