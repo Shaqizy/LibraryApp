@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -35,5 +36,12 @@ class PublisherController(val publisherService: PublisherService) {
     fun createPublisher(@RequestBody publisherDto: PublisherDto): ResponseEntity<InfoMessageDto> {
         publisherService.create(publisherDto)
         return ResponseEntity(InfoMessageDto("Publisher created successfully!"), HttpStatus.CREATED)
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Изменение издательства по идентификатору")
+    fun updatePublisher(@PathVariable id: String, @RequestBody publisherDto: PublisherDto): ResponseEntity<InfoMessageDto> {
+        publisherService.update(id, publisherDto)
+        return ResponseEntity(InfoMessageDto("Publisher by id = $id updated!"), HttpStatus.OK)
     }
 }
