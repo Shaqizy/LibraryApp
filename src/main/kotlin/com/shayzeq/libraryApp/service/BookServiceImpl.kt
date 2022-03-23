@@ -1,14 +1,10 @@
 package com.shayzeq.libraryApp.service
 
 import com.shayzeq.libraryApp.dao.BookDao
-import com.shayzeq.libraryApp.dto.AuthorDto
 import com.shayzeq.libraryApp.dto.BookDto
-import com.shayzeq.libraryApp.dto.PublisherDto
-import com.shayzeq.libraryApp.exception.BookNotFoundException
+import com.shayzeq.libraryApp.exception.NotFoundException
 import com.shayzeq.libraryApp.mapper.BookMapper
-import com.shayzeq.libraryApp.model.Author
 import com.shayzeq.libraryApp.model.Book
-import com.shayzeq.libraryApp.model.Publisher
 import org.mapstruct.factory.Mappers
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -18,17 +14,14 @@ class BookServiceImpl(
     private val bookDao: BookDao
     ) : BookService{
 
-    val bookMapper = Mappers.getMapper(BookMapper::class.java)
+    val bookMapper: BookMapper = Mappers.getMapper(BookMapper::class.java)
 
     override fun getAllBooks(): List<BookDto> =
-//        bookDao.findAll().map { it?.toDto() ?: throw BookNotFoundException("Book list is empty") }
-        bookDao.findAll().map { bookMapper.mapToDto(it ?: throw BookNotFoundException("Book list is empty")) }
+        bookDao.findAll().map { bookMapper.mapToDto(it ?: throw NotFoundException("Book list is empty")) }
 
     override fun getById(id: String): BookDto =
-//        bookDao.findByIdOrNull(id)?.toDto()
-//            ?: throw BookNotFoundException("Book with id = $id not found")
         bookMapper.mapToDto(bookDao.findByIdOrNull(id)
-            ?: throw BookNotFoundException("Book with id = $id not found"))
+            ?: throw NotFoundException("Book with id = $id not found"))
 
     override fun create(book: BookDto) {
 //        bookDao.save(book.fromDto())
@@ -37,7 +30,7 @@ class BookServiceImpl(
 
     override fun update(id: String, book: BookDto) {
         val existingBook: Book = bookDao.findByIdOrNull(id)
-            ?: throw BookNotFoundException("Book with id = $id not found")
+            ?: throw NotFoundException("Book with id = $id not found")
         val futureBook = bookMapper.mapToModel(book)
         existingBook.name = futureBook.name ?: existingBook.name
         existingBook.volume = futureBook.volume ?: existingBook.volume
@@ -50,7 +43,7 @@ class BookServiceImpl(
 
     override fun deleteById(id: String) {
         val existingBook: Book = bookDao.findByIdOrNull(id)
-            ?: throw BookNotFoundException("Book with id = $id not found")
+            ?: throw NotFoundException("Book with id = $id not found")
         bookDao.deleteById(existingBook.book_id)
     }
 

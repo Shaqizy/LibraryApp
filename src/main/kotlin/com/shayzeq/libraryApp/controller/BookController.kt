@@ -2,7 +2,6 @@ package com.shayzeq.libraryApp.controller
 
 import com.shayzeq.libraryApp.dto.BookDto
 import com.shayzeq.libraryApp.dto.InfoMessageDto
-import com.shayzeq.libraryApp.exception.BookNotFoundException
 import com.shayzeq.libraryApp.service.BookService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag

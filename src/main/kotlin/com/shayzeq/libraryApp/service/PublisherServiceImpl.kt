@@ -2,6 +2,9 @@ package com.shayzeq.libraryApp.service
 
 import com.shayzeq.libraryApp.dao.PublisherDao
 import com.shayzeq.libraryApp.dto.PublisherDto
+import com.shayzeq.libraryApp.exception.NotFoundException
+import com.shayzeq.libraryApp.mapper.PublisherMapper
+import org.mapstruct.factory.Mappers
 import org.springframework.stereotype.Service
 
 @Service
@@ -9,16 +12,17 @@ class PublisherServiceImpl(
     private val publisherDao: PublisherDao
     ) : PublisherService {
 
-    override fun getAllPublishers(): List<PublisherDto>? {
-        TODO("Not yet implemented")
-    }
+    val publisherMapper: PublisherMapper = Mappers.getMapper(PublisherMapper::class.java)
+
+    override fun getAllPublishers(): List<PublisherDto>? =
+        publisherDao.findAll().map { publisherMapper.mapToDto(it ?: throw NotFoundException("Publisher list is empty")) }
 
     override fun getById(id: String): PublisherDto {
         TODO("Not yet implemented")
     }
 
     override fun create(publisherDto: PublisherDto) {
-        TODO("Not yet implemented")
+        publisherDao.save(publisherMapper.mapToModel(publisherDto))
     }
 
     override fun update(id: String, publisherDto: PublisherDto) {
