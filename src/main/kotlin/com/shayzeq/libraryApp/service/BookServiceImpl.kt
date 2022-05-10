@@ -43,7 +43,7 @@ class BookServiceImpl(
     override fun deleteById(id: String) {
         val existingBook: Book = bookDao.findByIdOrNull(id)
             ?: throw NotFoundException("Book with id = $id not found")
-        bookDao.deleteById(existingBook.book_id)
+        bookDao.deleteById(existingBook.book_id!!)
     }
 
 }

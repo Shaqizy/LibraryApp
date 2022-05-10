@@ -4,7 +4,7 @@ import com.shayzeq.libraryApp.dto.AuthorDto
 
 interface AuthorService {
 
-    fun getAllBooks(): List<AuthorDto>?
+    fun getAllAuthors(): List<AuthorDto>?
 
     fun getById(id: String): AuthorDto
 
