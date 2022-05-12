@@ -8,7 +8,7 @@ interface PublisherService {
 
     fun getById(id: String): PublisherDto
 
-    fun create(publisherDto: PublisherDto)
+    fun create(publisherDto: PublisherDto): String
 
     fun update(id: String, publisherDto: PublisherDto)
 

@@ -23,8 +23,9 @@ class PublisherServiceImpl(
         publisherMapper.mapToDto(publisherDao.findByIdOrNull(id)
             ?: throw NotFoundException("Publisher with id = $id not found"))
 
-    override fun create(publisherDto: PublisherDto) {
-        publisherDao.save(publisherMapper.mapToModel(publisherDto))
+    override fun create(publisherDto: PublisherDto): String {
+        val publisher = publisherDao.save(publisherMapper.mapToModel(publisherDto))
+        return publisher.publisher_id!!
     }
 
     override fun update(id: String, publisherDto: PublisherDto) {
