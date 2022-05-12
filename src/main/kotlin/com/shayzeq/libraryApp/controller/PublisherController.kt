@@ -35,8 +35,8 @@ class PublisherController(val publisherService: PublisherService) {
     @PostMapping("/new")
     @Operation(summary = "Создание нового издательства")
     fun createPublisher(@RequestBody publisherDto: PublisherDto): ResponseEntity<InfoMessageDto> {
-        publisherService.create(publisherDto)
-        return ResponseEntity(InfoMessageDto("Publisher created successfully!"), HttpStatus.CREATED)
+        val id = publisherService.create(publisherDto)
+        return ResponseEntity(InfoMessageDto("Publisher with id = $id created successfully!"), HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")

@@ -23,14 +23,15 @@ class BookServiceImpl(
         bookMapper.mapToDto(bookDao.findByIdOrNull(id)
             ?: throw NotFoundException("Book with id = $id not found"))
 
-    override fun create(book: BookDto) {
-        bookDao.save(bookMapper.mapToModel(book))
+    override fun create(bookDto: BookDto): String {
+        val book = bookDao.save(bookMapper.mapToModel(bookDto))
+        return book.book_id!!
     }
 
-    override fun update(id: String, book: BookDto) {
+    override fun update(id: String, bookDto: BookDto) {
         val existingBook: Book = bookDao.findByIdOrNull(id)
             ?: throw NotFoundException("Book with id = $id not found")
-        val futureBook = bookMapper.mapToModel(book)
+        val futureBook = bookMapper.mapToModel(bookDto)
         existingBook.name = futureBook.name ?: existingBook.name
         existingBook.volume = futureBook.volume ?: existingBook.volume
         existingBook.publicationYear = futureBook.publicationYear ?: existingBook.publicationYear
@@ -43,7 +44,7 @@ class BookServiceImpl(
     override fun deleteById(id: String) {
         val existingBook: Book = bookDao.findByIdOrNull(id)
             ?: throw NotFoundException("Book with id = $id not found")
-        bookDao.deleteById(existingBook.book_id)
+        bookDao.deleteById(existingBook.book_id!!)
     }
 
 }

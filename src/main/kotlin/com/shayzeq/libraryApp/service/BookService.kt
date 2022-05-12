@@ -8,7 +8,7 @@ interface BookService {
 
     fun getById(id: String): BookDto
 
-    fun create(book: BookDto)
+    fun create(book: BookDto): String
 
     fun update(id: String, book: BookDto)
 

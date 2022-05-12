@@ -36,15 +36,15 @@ class BookController(val bookService: BookService) {
 
     @PostMapping("/new")
     @Operation(summary = "Создание новой книги")
-    fun createBook(@RequestBody book: BookDto): ResponseEntity<Any> {
-        bookService.create(book)
-        return ResponseEntity(InfoMessageDto("Book with id = ${book.book_id} created successfully!"), HttpStatus.CREATED)
+    fun createBook(@RequestBody bookDto: BookDto): ResponseEntity<Any> {
+        val id = bookService.create(bookDto)
+        return ResponseEntity(InfoMessageDto("Book with id = $id created successfully!"), HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Обновление книги по ее идентификатору")
-    fun updateBook(@PathVariable id: String, @RequestBody book: BookDto): ResponseEntity<Any>{
-        bookService.update(id, book)
+    fun updateBook(@PathVariable id: String, @RequestBody bookDto: BookDto): ResponseEntity<Any>{
+        bookService.update(id, bookDto)
         return ResponseEntity(InfoMessageDto("Book by id = $id updated!"), HttpStatus.OK)
     }
 
