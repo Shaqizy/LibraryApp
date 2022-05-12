@@ -23,9 +23,11 @@ class AuthorServiceImpl(
         authorMapper.mapToDto(authorDao.findByIdOrNull(id)
             ?: throw NotFoundException("Author with id = $id not found"))
 
-    override fun create(authorDto: AuthorDto) {
-        authorDao.save(authorMapper.mapToModel(authorDto))
+    override fun create(authorDto: AuthorDto): String {
+        val author = authorDao.save(authorMapper.mapToModel(authorDto))
+        return author.author_id!!
     }
+
 
     override fun update(id: String, authorDto: AuthorDto) {
         val existingAuthor: Author = authorDao.findByIdOrNull(id)
