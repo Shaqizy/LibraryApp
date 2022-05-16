@@ -21,6 +21,10 @@ class UserServiceImpl(
         return newUser.id
     }
 
+    override fun findByLogin(login: String): User? {
+        return userDao.findByLogin(login)
+    }
+
     override fun update(id: Int, userDto: UserDto) {
         TODO("Not yet implemented")
     }
