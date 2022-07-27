@@ -1,5 +1,6 @@
 package com.shayzeq.libraryApp.advice
 
+import com.shayzeq.libraryApp.dto.ApiErrorDto
 import com.shayzeq.libraryApp.exception.NotFoundException
 import com.shayzeq.libraryApp.exception.LibraryAbstractException
 import org.springframework.http.HttpStatus
@@ -20,10 +21,3 @@ class CustomAdvice {
         return ResponseEntity(ApiErrorDto(httpServletRequest.requestURI, ex.message), HttpStatus.NOT_FOUND)
     }
 }
-
-data class ApiErrorDto(
-    val path: String,
-    val message: String = "no message",
-    val traceId: String = "no traceId",
-    val timestamp: Instant = Instant.now()
-)

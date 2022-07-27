@@ -1,9 +1,13 @@
 package com.shayzeq.libraryApp.controller
 
+import com.shayzeq.libraryApp.dto.ApiErrorDto
 import com.shayzeq.libraryApp.dto.AuthorDto
 import com.shayzeq.libraryApp.dto.InfoMessageDto
 import com.shayzeq.libraryApp.service.AuthorService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -22,7 +26,21 @@ import org.springframework.web.bind.annotation.RestController
 class AuthorController(val authorService: AuthorService) {
 
     @GetMapping("/{id}")
-    @Operation(summary = "Получение автора по ее идентификатору")
+    @Operation(summary = "Получение автора по его идентификатору",
+        responses = [
+            ApiResponse(
+                description = "Сущность Автор",
+                responseCode = "200",
+                content = arrayOf(Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = AuthorDto::class)))),
+            ApiResponse(
+                description = "Сущность Ошибка",
+                responseCode = "404",
+                content = arrayOf(Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ApiErrorDto::class))))
+    ])
     fun getAuthorById(@PathVariable id: String): ResponseEntity<Any> {
         val authorDto: AuthorDto = authorService.getById(id)
         return ResponseEntity(authorDto, HttpStatus.OK)
